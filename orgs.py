@@ -1,6 +1,4 @@
-
-
-class Humans():
+class Orgs():
 
 
     def __init__(self, age, name, race, health, force, stamina, iq, magic, money ):
