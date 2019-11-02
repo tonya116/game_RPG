@@ -1,5 +1,7 @@
 import humans
 import orgs
+import tkinter
+from tkinter import *
 
 
 
@@ -12,3 +14,14 @@ hero.regeniration()
 hero.regeniration()
 print(hero.level_health)
 print(hero.level_magic)
+
+
+root = Tk()
+root.geometry("500x500")
+
+canvas = Canvas(root, width = 500, height = 500, bg = 'black')
+
+
+
+canvas.pack()
+root.mainloop()
