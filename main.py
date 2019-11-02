@@ -1,8 +1,5 @@
-#import humans
+import humans
 
-print("hello world")
-print("insert the name of hero")
-name = input()
-print(name)
+hero = humans.Humans(20, "Den", "Human", 100, 1, 1, 1, 1, 100 )
 
-#hero = humans.Humans(10, 32, "human",  100, 10, 100, 100,100, 100)
+print(hero.age)

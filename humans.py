@@ -13,3 +13,4 @@ class Humans():
         self.iq = iq
         self.magic = magic
         self.money = money
+    
