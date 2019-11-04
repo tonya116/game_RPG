@@ -17,6 +17,9 @@ class Humans():
         self.level_magic = 100
         self.money = money
 
+
+
+
     def damage(self, damage):
         self.level_health -= damage
 
@@ -32,7 +35,7 @@ class Humans():
     def upgrade_magic(self):
         self.magic += 1
 
-    def regeniration(self):
+    def regeneration(self):
         if self.level_health <= self.health-10:
             self.level_magic -= self.level_magic/2
             self.level_health += int(0.1 * self.health)
