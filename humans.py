@@ -1,3 +1,5 @@
+import showing
+
 class Humans():
 
 
@@ -18,7 +20,8 @@ class Humans():
         self.money = money
 
 
-
+    def show(self):
+        showing.Showing().show()
 
     def damage(self, damage):
         self.level_health -= damage
