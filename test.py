@@ -1,18 +1,33 @@
-import pygame, sys
-file = song = '/root/Downloads/Antipozitiv.mp3'
-def play(song):
-    pygame.mixer.music.load(song)
-    pygame.mixer.music.play()
-    while pygame.mixer.music.get_busy():
-            pos = pygame.mixer.music.get_pos()/ 1000
+from tkinter import *
+
+
+class MainInterface:
+    def __init__(self):
+        self.root = Tk()
+        self.root.title()
+        self.root.geometry("500x500")
+        self.canvas = Canvas(self.root, width = 500, height = 500, bg = 'black')
+        self.canvas.pack()
+        self.x = 100
+        self.y = 100
+        self.create()
+        self.show()
 
 
 
 
-    pygame.mixer.init(22050, -16, 2, 2048)
-    pygame.mixer.music.set_volume(2.0)
-    play(song)
-    pygame.quit()
+
+    def create(self):
+        self.object =  self.canvas.create_rectangle(self.x, self.y, self.x + 10,self.y + 10, fill = "green")
 
 
-play(song)
+    def show(self):
+        self.x += 10
+        self.y -= 10
+        print(self.x, self.y)
+        self.canvas.move(self.object, self.x, self.y)
+        self.canvas.after(1000, self.show)
+
+
+program = MainInterface()
+program.root.mainloop()
