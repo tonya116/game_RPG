@@ -1,18 +1,20 @@
-
-
 import pygame
 from pygame.sprite import Sprite
 from pygame.image import *
+
+WIDTH = 800
+HEIGHT = 650
+GREEN = (0, 255, 0)
 
 class Humans(pygame.sprite.Sprite):
 
 
     def __init__(self, age, name, race, health, force, stamina, iq, magic, money):
-        Sprite.__init__(self)
+        pygame.sprite.Sprite.__init__(self)
         self.image = pygame.Surface((10, 10))
-        self.image.fill((0,255,0))
+        self.image.fill(GREEN)
         self.rect = self.image.get_rect()
-
+        self.rect.center = (WIDTH / 2, HEIGHT / 2)
         self.age = age
         self.name = name
         self.race = race
@@ -36,9 +38,7 @@ class Humans(pygame.sprite.Sprite):
 
 
     def update(self):
-        self.rect.x += 10
-
-
+        pass
 
     def damage(self, damage):
         self.level_health -= damage
