@@ -1,68 +1,34 @@
+# encoding: utf-8
 import humans
-import tkinter as tk
-from random import randint
+import pygame
 
-WIDTH = 500
-HEIGHT = 500
-
-
-class Showing:
-    def __init__(self):
-        self.x = 100
-        self.y = 100
-        self.rect_id = canvas.create_rectangle(
-                                    self.x,
-                                    self.y,
-                                    self.x + 10,
-                                    self.y + 10,
-                                    fill="green")
-
-
-
-
-    def show(self):
-        
-        canvas.coords(self.rect_id, self.x, self.y, self.x + 10, self.y + 10)
-
-    def move(self, event):
-
-        if event.char == "w":
-            self.y -= 10
-        if event.char == "s":
-            self.y += 10
-        if event.char == "a":
-            self.x -= 10
-        if event.char == "d":
-            self.x += 10
-
-    def get_button(self):
-        canvas.bind('<Key>', self.move)
-
+pygame.init()
+display = pygame.display.set_mode((640,480))
+surface = pygame.Surface((640,480))
+surface.fill((0,0,0))
 
 hero = humans.Humans(20, "Den", "Human", 100, 1, 1, 1, 1, 100)
+all_sprites = pygame.sprite.Group()
+
+all_sprites.add(hero)
 
 
-def tick():
+done = True
+a = 0
+while done:
+    a += 1
+    for e in pygame.event.get():
+        if e.type == pygame.QUIT:
+            done = False
+            print("GAME OVER")
 
-        obj.show()
-        obj.get_button()
-        root.after(10, tick)
+    print(a)
+    hero.update()
+    all_sprites.update()
 
+    all_sprites.draw(surface)
 
-def main():
-    global root, canvas, obj
+    display.blit(surface,(0,0))
+    pygame.display.flip()
 
-    root = tk.Tk()
-    root.geometry(str(WIDTH) + "x" + str(HEIGHT))
-    canvas = tk.Canvas(root, width=500, height=500, bg = "black")
-
-    canvas.pack()
-
-    obj = Showing()
-
-    tick()
-    root.mainloop()
-
-
-if __name__ == "__main__":
-    main()
+    pygame.time.delay(1000)

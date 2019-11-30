@@ -1,33 +1,21 @@
-from tkinter import *
+# encoding: utf-8
+import pygame
 
+pygame.init()
+window = pygame.display.set_mode((640,480))
+pygame.display.init()
+screen = pygame.Surface((640,480))
 
-class MainInterface:
-    def __init__(self):
-        self.root = Tk()
-        self.root.title()
-        self.root.geometry("500x500")
-        self.canvas = Canvas(self.root, width = 500, height = 500, bg = 'black')
-        self.canvas.pack()
-        self.x = 100
-        self.y = 100
-        self.create()
-        self.show()
+done = True
 
+while done:
+	for e in pygame.event.get():
+		if e.type == pygame.QUIT:
+			done = False
+			print("GAME OVER")
 
-
-
-
-    def create(self):
-        self.object =  self.canvas.create_rectangle(self.x, self.y, self.x + 10,self.y + 10, fill = "green")
-
-
-    def show(self):
-        self.x += 10
-        self.y -= 10
-        print(self.x, self.y)
-        self.canvas.move(self.object, self.x, self.y)
-        self.canvas.after(1000, self.show)
-
-
-program = MainInterface()
-program.root.mainloop()
+	screen.fill((0,0,0))
+	sprite_group.draw(screen)
+	window.blit(screen,(0,0))
+	pygame.display.flip()
+	pygame.time.delay(5)

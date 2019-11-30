@@ -1,10 +1,17 @@
-import showing
-import keyboard
 
-class Humans():
+
+import pygame
+from pygame.sprite import Sprite
+from pygame.image import *
+
+class Humans(pygame.sprite.Sprite):
 
 
     def __init__(self, age, name, race, health, force, stamina, iq, magic, money):
+        Sprite.__init__(self)
+        self.image = pygame.Surface((10, 10))
+        self.image.fill((0,255,0))
+        self.rect = self.image.get_rect()
 
         self.age = age
         self.name = name
@@ -20,15 +27,22 @@ class Humans():
         self.level_iq = 100
         self.level_magic = 100
         self.money = money
+        self.x = 100
+        self.y = 100
+        self.width = self.x + 10
+        self.height = self.y + 10
 
 
 
 
+    def update(self):
+        self.rect.x += 10
 
 
 
     def damage(self, damage):
         self.level_health -= damage
+
 
     def upgrade_force(self):
         self.force += 1
@@ -46,7 +60,3 @@ class Humans():
         if self.level_health <= self.health-10:
             self.level_magic -= self.level_magic/2
             self.level_health += int(0.1 * self.health)
-
-
-
-    
