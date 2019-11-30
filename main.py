@@ -39,6 +39,21 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
+
+    if event.type == pygame.KEYDOWN:
+        if event.key == pygame.K_w:
+            hero.rect.y -= 10
+            pygame.time.delay(50)
+        if event.key == pygame.K_s:
+            hero.rect.y += 10
+            pygame.time.delay(50)
+        if event.key == pygame.K_a:
+            hero.rect.x -= 10
+            pygame.time.delay(50)
+        if event.key == pygame.K_d:
+            hero.rect.x += 10
+            pygame.time.delay(50)
+
     # Обновление
     all_sprites.update()
 
