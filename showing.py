@@ -37,7 +37,7 @@ class Entity:
 
 
         self.root.update()
-        self.root.after(50, self.move)
+        
         self.root.bind('<Up>', lambda event: self.canvas.move(self.rect_id, 0, -10))
         self.root.bind('<Down>', lambda event: self.canvas.move(self.rect_id, 0, 10))
         self.root.bind('<Left>', lambda event: self.canvas.move(self.rect_id, -10, 0))
