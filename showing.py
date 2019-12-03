@@ -3,10 +3,7 @@ from tkinter import *
 WIDTH = 640
 HEIGHT = 480
 
-
-
-
-class Entity():
+class Entity:
 
     def __init__(self, age, name, race, health, force, stamina, iq, magic, money):
         self.root = Tk()
@@ -16,25 +13,17 @@ class Entity():
         self.x = 100
         self.y = 100
         self.rect_id = self.canvas.create_rectangle(self.x, self.y, self.x + 10, self.y + 10, fill=self.color)
-        self.root.mainloop()
+
+
         self.age = age
         self.name = name
         self.race = race
         self.health = health
         self.force = force
-        self.stamina = stamina
-        self.iq = iq
-        self.magic = magic
-        self.level_health = self.health
-        self.level_force = 100
-        self.level_stamina = 100
-        self.level_iq = 100
-        self.level_magic = 100
-        self.money = money
+
 
     def damage(self, damage):
-        self.level_health -= damage
-
+        self.health -= damage
 
     def regeneration(self):
         if self.level_health <= self.health-10:
@@ -42,7 +31,15 @@ class Entity():
             self.level_health += int(0.1 * self.health)
 
     def tick(self):
-        after(50, tick)
+        self.root.after(50, self.tick)
+
+    def move(self):
 
 
-#obj = Entity(20, "Den", "Human", 100, 1, 1, 1, 1, 100)
+        self.root.update()
+        self.root.after(50, self.move)
+        self.root.bind('<Up>', lambda event: self.canvas.move(self.rect_id, 0, -10))
+        self.root.bind('<Down>', lambda event: self.canvas.move(self.rect_id, 0, 10))
+        self.root.bind('<Left>', lambda event: self.canvas.move(self.rect_id, -10, 0))
+        self.root.bind('<Right>', lambda event: self.canvas.move(self.rect_id, 10, 0))
+        self.root.mainloop()
