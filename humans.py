@@ -1,20 +1,50 @@
 ## -*- coding: utf-8 -*-
-from showing import *
 
+import showing as sh
 
-class Humans(Entity):
+class Humans:
     """
     этот класс связан со всем, что связано с героем в частности
-    он наследует класс Entity
+
     """
-    def __init__(self, age, name, race, health, force, stamina, iq, magic, money):
-        Entity.__init__(self, age, name, race, health, force, stamina, iq, magic, money)
-        self.stamina = stamina
-        self.iq = iq
-        self.magic = magic
-        self.level_health = self.health
-        self.level_force = 100
-        self.level_stamina = 100
-        self.level_iq = 100
-        self.level_magic = 100
-        self.money = money
+    def __init__(self, name, race, health, force, x, y):
+        self.x = x
+        self.y = y
+        self.health = health
+        self.race = race
+        self.force = force
+        self.color = "green"
+        self.rect_id = sh.obj.canvas.create_rectangle(self.x, self.y, self.x + 10, self.y + 10, fill=self.color)
+
+    def damage(self, damage):  #урон
+        self.health -= damage
+
+    def move_hero(self):  # движение
+        sh.obj.root.bind('<w>', lambda event: sh.obj.canvas.move(self.rect_id, 0, -10))
+        sh.obj.root.bind('<s>', lambda event: sh.obj.canvas.move(self.rect_id, 0, 10))
+        sh.obj.root.bind('<a>', lambda event: sh.obj.canvas.move(self.rect_id, -10, 0))
+        sh.obj.root.bind('<d>', lambda event: sh.obj.canvas.move(self.rect_id, 10, 0))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    #def regeneration(self):  #регенерация
+    #    if self.level_health <= self.health-10:
+    #        self.level_magic -= self.level_magic/2
+    #        self.level_health += int(0.1 * self.health)

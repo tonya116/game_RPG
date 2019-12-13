@@ -1,5 +1,13 @@
 ## -*- coding: utf-8 -*-
-import humans
+import humans as h
+import showing as sh
 
-hero = humans.Humans(20, "Den", "Human", 100, 1, 1, 1, 1, 100)
-hero.move()
+
+
+
+hero = h.Humans("Den", "Hero", 100, 100, 150, 200)
+hero.move_hero()
+
+
+
+sh.obj.root.mainloop()
