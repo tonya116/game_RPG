@@ -1,5 +1,4 @@
 ## -*- coding: utf-8 -*-
-
 import showing as sh
 
 class Humans:
@@ -14,17 +13,22 @@ class Humans:
         self.race = race
         self.force = force
         self.color = "green"
-        self.rect_id = sh.obj.canvas.create_rectangle(self.x, self.y, self.x + 10, self.y + 10, fill=self.color)
+        self.rect_id = sh.canvas.canvas.create_rectangle(self.x, self.y, self.x + 10, self.y + 10, fill=self.color)
 
     def damage(self, damage):  #урон
         self.health -= damage
 
     def move_hero(self):  # движение
-        sh.obj.root.bind('<w>', lambda event: sh.obj.canvas.move(self.rect_id, 0, -10))
-        sh.obj.root.bind('<s>', lambda event: sh.obj.canvas.move(self.rect_id, 0, 10))
-        sh.obj.root.bind('<a>', lambda event: sh.obj.canvas.move(self.rect_id, -10, 0))
-        sh.obj.root.bind('<d>', lambda event: sh.obj.canvas.move(self.rect_id, 10, 0))
+        sh.canvas.root.bind('<w>', lambda event: sh.canvas.canvas.move(self.rect_id, 0, -10))
+        sh.canvas.root.bind('<s>', lambda event: sh.canvas.canvas.move(self.rect_id, 0, 10))
+        sh.canvas.root.bind('<a>', lambda event: sh.canvas.canvas.move(self.rect_id, -10, 0))
+        sh.canvas.root.bind('<d>', lambda event: sh.obj.canvas.move(self.rect_id, 10, 0))
 
+    def collide_checker(self, list_of_coords):
+        for x, y in list_of_coords:
+            if self.x == x and self.y == y:
+                print("lol")
+        
 
 
 
