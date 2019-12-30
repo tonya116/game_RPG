@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import showing as sh
+from random import randrange as rndt
 
 class Humans:
     """
@@ -29,7 +30,7 @@ class Humans:
 
 
 
-hero = Humans("Den", "Hero", 100, 100, 150, 200)
+hero = Humans("Den", "Hero", 100, 100, rndt(0, 640, 10),rndt(0, 480, 10))
 hero.move_hero()
 hero.coords()
 

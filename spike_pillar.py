@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import showing as sh
+from random import randrange as rndt
 
 class SpikePillar:
     """
@@ -24,5 +25,5 @@ class SpikePillar:
 
 
 
-sp1 = SpikePillar("1", "spike_pillar", 100, 100, 350, 200)
+sp1 = SpikePillar("sp1", "spike_pillar", 100, 100,rndt(0, 640, 10),rndt(0, 480, 10))
 sp1.coords()
