@@ -1,51 +1,37 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
+import queue
 
-from tkinter import Tk, Frame, BOTH, Canvas
-
-class Example():
-    def __init__(self, parent):
-        #Canvas.__init__(self, parent, width = 500, height = 500, background="black")
-        self.parent = parent
-
-
-    def create(self,x,y, color):
-        self.rect = self.parent.create_rectangle(x,y,x+10,y+10,fill = color)
-
-
-    def move_hero(self):  # движение
-        self.parent.bind('<w>', lambda event: self.parent.move(self.rect, 0, -10))
-        self.parent.bind('<s>', lambda event: self.parent.move(self.rect, 0, 10))
-        self.parent.bind('<a>', lambda event: self.parent.move(self.rect, -10, 0))
-        self.parent.bind('<d>', lambda event: self.parent.move(self.rect, 10, 0))
-        self.parent.after(30, move_hero)
-
+def task(name, work_queue):
+    if work_queue.empty():
+        print(f"Task {name} nothing to do")
+    else:
+        while not work_queue.empty():
+            count = work_queue.get()
+            total = 0
+            print(f"Task {name} running")
+            for x in range(count):
+                total += 1
+            print(f"Task {name} total: {total}")
 
 def main():
-    root = Tk()
-    c = Canvas(root, width = 500, height = 500, background="black")
-    c.pack()
-    root.bind('<w>', lambda event: self.parent.move(self.rect, 0, -10))
-    root.bind('<s>', lambda event: self.parent.move(self.rect, 0, 10))
-    root.bind('<a>', lambda event: self.parent.move(self.rect, -10, 0))
-    root.bind('<d>', lambda event: self.parent.move(self.rect, 10, 0))
-    app = Example(c)
-    app.create(10,10,"white")
-    app.move_hero()
-    a = Example(c)
-    a.create(40,40,"green")
+    """
+    This is the main entry point for the program.
+    """
+    # Create the queue of 'work'
+    work_queue = queue.Queue()
 
+    # Put some 'work' in the queue
+    for work in [15, 10, 5, 2]:
+        work_queue.put(work)
 
-    root.mainloop()
+    # Create some synchronous tasks
+    tasks = [
+        (task, "One", work_queue),
+        (task, "Two", work_queue)
+    ]
 
-if __name__ == '__main__':
+    # Run the tasks
+    for t, n, q in tasks:
+        t(n, q)
+
+if __name__ == "__main__":
     main()
-
-
-#root = Tk()
-#c = Canvas(self.root, width=300, height=300, bg='white')
-#c.pack()
-
-
-
-#root.mainloop()

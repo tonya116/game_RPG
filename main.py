@@ -1,19 +1,23 @@
-## -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 import humans
 import showing as sh
 import spike_pillar as sp
 
 
+list_of_objects = []
+list_of_objects.append(humans.hero)
+list_of_objects.append(sp.sp1)
 
 
-hero = humans.Humans("Den", "Hero", 100, 100, 150, 200)
-hero.move_hero()
 
-sp1 = sp.SpikePillar("1", "spike_pillar", 100, 100, 350, 200)
+def collide_checker():
+    for i in list_of_objects:
+        i.coords()
+    if humans.hero.coordinates == sp.sp1.coordinates:
+        humans.hero.damage(10)
+        print(humans.hero.health)
+    sh.canvas.root.after(1000, collide_checker)
 
-list_of_coords = [ {sp1.x, sp1.y} ]
-
-hero.collide_checker(list_of_coords)
-
+collide_checker()
 
 sh.canvas.root.mainloop()

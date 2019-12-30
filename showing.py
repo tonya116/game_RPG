@@ -1,4 +1,4 @@
-## -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 from tkinter import *
 
 
@@ -14,5 +14,6 @@ class Showing:
         self.root = Tk()
         self.canvas = Canvas(self.root, width=WIDTH, height=HEIGHT, bg='black')
         self.canvas.pack()
+
 
 canvas = Showing()
