@@ -21,9 +21,3 @@ class SpikePillar:
 
     def coords(self):
         self.coordinates = sh.canvas.canvas.coords(self.rect_id)
-
-
-
-
-sp1 = SpikePillar("sp1", "spike_pillar", 100, 100,rndt(0, 640, 10),rndt(0, 480, 10))
-sp1.coords()

@@ -17,6 +17,3 @@ class Portal:
 
     def coords(self):
         self.coordinates = sh.canvas.canvas.coords(self.rect_id)
-
-p1 = Portal("p1", "portal", 100, 0, rndt(0, 640, 10),rndt(0, 480, 10))
-p1.coords()

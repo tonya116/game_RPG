@@ -2,6 +2,9 @@
 import showing as sh
 from random import randrange as rndt
 
+WIDTH = 640
+HEIGHT = 480
+
 class Humans:
     """
     этот класс связан со всем, что связано с героем
@@ -17,6 +20,21 @@ class Humans:
 
     def coords(self):
         self.coordinates = sh.canvas.canvas.coords(self.rect_id)
+        print(self.coordinates)
+        sh.canvas.root.after(10,self.coords)
+
+    def check_collide_box(self):
+
+        if int(self.coordinates[0]) < 0:
+            sh.canvas.canvas.move(self.rect_id, 10, 0)
+        elif int(self.coordinates[1]) < 0:
+            sh.canvas.canvas.move(self.rect_id, 0, 10)
+        elif int(self.coordinates[2]) > WIDTH:
+            sh.canvas.canvas.move(self.rect_id, -10, 0)
+        elif int(self.coordinates[3]) > HEIGHT:
+            sh.canvas.canvas.move(self.rect_id, 0, -10)
+
+        sh.canvas.root.after(10,self.check_collide_box)
 
 
     def damage(self, damage):  #урон
@@ -29,10 +47,10 @@ class Humans:
         sh.canvas.root.bind('<d>', lambda event: sh.canvas.canvas.move(self.rect_id, 10, 0))
 
 
-
 hero = Humans("Den", "Hero", 100, 100, rndt(0, 640, 10),rndt(0, 480, 10))
 hero.move_hero()
 hero.coords()
+hero.check_collide_box()
 
 
 
