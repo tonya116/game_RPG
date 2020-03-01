@@ -2,6 +2,8 @@
 import showing as sh
 from random import randrange as rndt
 
+
+
 class Portal:
     """
     этот класс связан со всем, что связано с порталами
@@ -17,3 +19,12 @@ class Portal:
 
     def coords(self):
         self.coordinates = sh.canvas.canvas.coords(self.rect_id)
+        print(self.coordinates)
+
+
+list_of_portals = []
+
+for portal in range(1):
+    temp = Portal("p" + str(portal), "portal", 1, 0, rndt(0, 640, 10), rndt(0, 480, 10))
+    temp.coords()
+    list_of_portals.append(temp)
