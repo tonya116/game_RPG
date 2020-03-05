@@ -3,6 +3,7 @@ import showing as sh
 from random import randrange as rndt
 import portal as prtl
 import spike_pillar as sp
+import barrier
 
 WIDTH = 640
 HEIGHT = 480
@@ -19,6 +20,9 @@ class Hero:
         self.force = force
         self.color = "green"
         self.rect_id = sh.canvas.canvas.create_rectangle(self.x, self.y, self.x + 10, self.y + 10, fill=self.color)
+        self.health_label = sh.Label(sh.canvas.root, text = "health = " + str(self.health) + "%")
+
+        self.health_label.grid()
 
     def coords(self):
         self.coordinates = sh.canvas.canvas.coords(self.rect_id)
@@ -40,7 +44,12 @@ class Hero:
 
     def damage(self, damage):  #урон
         self.health -= damage
-        print(self.health)
+        self.health_label.config(text = "health = " + str(self.health) + "%")
+        if self.health < 1:
+            print("death")
+            death()
+
+
 
     def move_hero(self):  # движение
         sh.canvas.root.bind('<w>', lambda event: sh.canvas.canvas.move(self.rect_id, 0, -10))
@@ -51,9 +60,21 @@ class Hero:
 
 
     def checker_collide(self):
+
+        direction = ""
+
         for item in prtl.list_of_portals:
             if self.coordinates == item.coordinates:
                 sh.canvas.canvas.move(self.rect_id, rndt(-50, 50, 10), rndt(-50, 50, 10))
+
+
+
+        for item in barrier.list_of_barriers:
+
+            #прикасание справа
+            if self.coordinates[0] == item.coordinates[2] and self.coordinates[1] == item.coordinates[1] :
+                direction = "right"
+                print(direction)
 
 
 
@@ -85,7 +106,6 @@ class Hero:
 
 
 
-
 hero = Hero("Den", "Hero", 100, 100, rndt(0, 640, 10),rndt(0, 480, 10))
 hero.move_hero()
 hero.coords()
@@ -93,8 +113,10 @@ hero.check_collide_box()
 hero.checker_collide()
 
 
-
-
+def death():
+    global hero
+    sh.canvas.canvas.delete(hero.rect_id)
+    del hero
 
 
 

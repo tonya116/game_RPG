@@ -4,6 +4,7 @@ import hero
 import showing as sh
 import spike_pillar as sp
 import portal as prtl
+import barrier
 
 
 WIDTH = 640

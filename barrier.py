@@ -4,9 +4,9 @@ from random import randrange as rndt
 
 
 
-class Portal:
+class Barrier:
     """
-    этот класс связан со всем, что связано с порталами
+    этот класс связан со всем, что связано с преградами
     """
     def __init__(self, name, race, health, force, x, y):
         self.x = x
@@ -14,16 +14,16 @@ class Portal:
         self.health = health
         self.race = race
         self.force = force
-        self.color = "blue"
+        self.color = "yellow"
         self.rect_id = sh.canvas.canvas.create_rectangle(self.x, self.y, self.x + 10, self.y + 10, fill=self.color)
 
     def coords(self):
         self.coordinates = sh.canvas.canvas.coords(self.rect_id)
 
 
-list_of_portals = []
+list_of_barriers = []
 
-for portal in range(1):
-    temp = Portal("p" + str(portal), "portal", 1, 0, rndt(0, 640, 10), rndt(0, 480, 10))
+for barrier in range(1):
+    temp = Barrier("b" + str(barrier), "barrier", 1, 0, rndt(0, 640, 10), rndt(0, 480, 10))
     temp.coords()
-    list_of_portals.append(temp)
+    list_of_barriers.append(temp)

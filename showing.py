@@ -13,7 +13,7 @@ class Showing:
     def __init__(self):
         self.root = Tk()
         self.canvas = Canvas(self.root, width=WIDTH, height=HEIGHT, bg='black')
-        self.canvas.pack()
+        self.canvas.grid()
 
 
 canvas = Showing()

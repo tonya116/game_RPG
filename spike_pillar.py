@@ -26,6 +26,6 @@ class SpikePillar:
 list_of_pillares = []
 
 for pillar in range(1):
-    temp = SpikePillar("sp" + str(pillar), "spike_pillar", 1, 1, rndt(0, 640, 10), rndt(0, 480, 10))
+    temp = SpikePillar("sp" + str(pillar), "spike_pillar", 1, 5, rndt(0, 640, 10), rndt(0, 480, 10))
     temp.coords()
     list_of_pillares.append(temp)
