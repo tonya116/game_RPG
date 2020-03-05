@@ -5,6 +5,7 @@ import showing as sh
 import spike_pillar as sp
 import portal as prtl
 import barrier
+import orgs
 
 
 WIDTH = 640

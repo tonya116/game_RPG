@@ -9,7 +9,7 @@ class Entity:
 
     """ класс кубика на экране"""
 
-    def __init__(self, name, race, health, force, x, y):
+    def __init__(self, age, name, race, health, force, stamina, iq, magic, money ):
         self.root = Tk()
         self.canvas = Canvas(self.root, width=WIDTH, height=HEIGHT, bg='black')
         self.canvas.pack()

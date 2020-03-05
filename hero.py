@@ -47,7 +47,7 @@ class Hero:
         self.health -= damage
         self.health_label.config(text = "health = " + str(self.health) + "%")
         if self.health < 1:
-            print("death")
+            self.health_label.destroy()
             death()
 
 
@@ -71,7 +71,7 @@ class Hero:
 
 
         for item in barrier.list_of_barriers:
-            
+
 
             #прикасание справа
             if self.coordinates[0] == item.coordinates[2] and self.coordinates[1] == item.coordinates[1]:
@@ -145,6 +145,8 @@ hero.checker_collide()
 def death():
     global hero
     sh.canvas.canvas.delete(hero.rect_id)
+    death_label = sh.Label(sh.canvas.root, text = "You dead")
+    death_label.grid()
     del hero
 
 
