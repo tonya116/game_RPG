@@ -23,6 +23,7 @@ class Hero:
         self.health_label = sh.Label(sh.canvas.root, text = "health = " + str(self.health) + "%")
 
         self.health_label.grid()
+        self.direction = ""
 
     def coords(self):
         self.coordinates = sh.canvas.canvas.coords(self.rect_id)
@@ -61,7 +62,7 @@ class Hero:
 
     def checker_collide(self):
 
-        direction = ""
+
 
         for item in prtl.list_of_portals:
             if self.coordinates == item.coordinates:
@@ -70,11 +71,39 @@ class Hero:
 
 
         for item in barrier.list_of_barriers:
+            
 
             #прикасание справа
-            if self.coordinates[0] == item.coordinates[2] and self.coordinates[1] == item.coordinates[1] :
-                direction = "right"
-                print(direction)
+            if self.coordinates[0] == item.coordinates[2] and self.coordinates[1] == item.coordinates[1]:
+                self.direction = "right"
+
+            if self.coordinates == item.coordinates and self.direction == "right":
+
+                sh.canvas.canvas.move(self.rect_id, 10, 0)
+            #прикасание снизу
+            if self.coordinates[0] == item.coordinates[0] and self.coordinates[1] == item.coordinates[3]:
+                self.direction = "down"
+
+            if self.coordinates == item.coordinates and self.direction == "down":
+
+                sh.canvas.canvas.move(self.rect_id, 0, 10)
+            #прикасание слева
+            if self.coordinates[1] == item.coordinates[1] and self.coordinates[2] == item.coordinates[0]:
+                self.direction = "left"
+
+            if self.coordinates == item.coordinates and self.direction == "left":
+
+                sh.canvas.canvas.move(self.rect_id, -10, 0)
+            #прикасание сверху
+            if self.coordinates[0] == item.coordinates[0] and self.coordinates[3] == item.coordinates[1]:
+                self.direction = "up"
+
+            if self.coordinates == item.coordinates and self.direction == "up":
+
+                sh.canvas.canvas.move(self.rect_id, 0, -10)
+
+
+
 
 
 
