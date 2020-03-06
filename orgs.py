@@ -37,8 +37,18 @@ class Orgs:
 
 
     def move_org(self):  # движение
-        pass
-        #sh.canvas.canvas.move(self.rect_id, 0, -10))
+        if hero.hero.coordinates[0] < self.coordinates[0]:
+            sh.canvas.canvas.move(self.rect_id, -10, 0)
+        if hero.hero.coordinates[1] < self.coordinates[1]:
+            sh.canvas.canvas.move(self.rect_id, 0, -10)
+
+        if hero.hero.coordinates[0] > self.coordinates[0]:
+            sh.canvas.canvas.move(self.rect_id, 10, 0)
+        if hero.hero.coordinates[1] > self.coordinates[1]:
+            sh.canvas.canvas.move(self.rect_id, 0, 10)
+
+
+        sh.canvas.root.after(500, self.move_org)
         #sh.canvas.canvas.move(self.rect_id, 0, 10))
         #sh.canvas.canvas.move(self.rect_id, -10, 0))
         #sh.canvas.canvas.move(self.rect_id, 10, 0))
@@ -131,7 +141,7 @@ list_of_orgs = []
 
 for org in range(1):
     temp = Orgs("org" + str(org), "org", 100, 10, rndt(0, 640, 10), rndt(0, 480, 10))
-    temp.move_org()
     temp.coords()
+    temp.move_org()
     temp.checker_collide()
     list_of_orgs.append(temp)
