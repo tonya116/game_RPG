@@ -12,7 +12,7 @@ class SpikePillar:
         self.health = health
         self.race = race
         self.force = force
-        self.color = "gray"
+        self.color = "brown"
         self.rect_id = sh.canvas.canvas.create_rectangle(self.x,
                                                          self.y,
                                                          self.x + 10,

@@ -4,7 +4,8 @@ from random import randrange as rndt
 import portal as prtl
 import spike_pillar as sp
 import barrier
-import hero
+
+
 
 WIDTH = 640
 HEIGHT = 480
@@ -22,36 +23,20 @@ class Orgs:
         self.color = "red"
         self.rect_id = sh.canvas.canvas.create_rectangle(self.x, self.y, self.x + 10, self.y + 10, fill=self.color)
         self.direction = ""
+        self.health_label = sh.Label(sh.canvas.root, text = "health = " + str(self.health) + "%")
+
+        self.health_label.grid()
 
     def coords(self):
         self.coordinates = sh.canvas.canvas.coords(self.rect_id)
         sh.canvas.root.after(10,self.coords)
 
 
-    def damage(self, damage):  #урон
-        self.health -= damage
-        if self.health < 1:
-            print("death")
-            death()
 
 
 
-    def move_org(self):  # движение
-        if hero.hero.coordinates[0] < self.coordinates[0]:
-            sh.canvas.canvas.move(self.rect_id, -10, 0)
-        if hero.hero.coordinates[1] < self.coordinates[1]:
-            sh.canvas.canvas.move(self.rect_id, 0, -10)
-
-        if hero.hero.coordinates[0] > self.coordinates[0]:
-            sh.canvas.canvas.move(self.rect_id, 10, 0)
-        if hero.hero.coordinates[1] > self.coordinates[1]:
-            sh.canvas.canvas.move(self.rect_id, 0, 10)
 
 
-        sh.canvas.root.after(500, self.move_org)
-        #sh.canvas.canvas.move(self.rect_id, 0, 10))
-        #sh.canvas.canvas.move(self.rect_id, -10, 0))
-        #sh.canvas.canvas.move(self.rect_id, 10, 0))
 
 
 
@@ -107,8 +92,7 @@ class Orgs:
 
                 sh.canvas.canvas.move(self.rect_id, 0, -10)
 
-        if self.coordinates == hero.hero.coordinates:
-            hero.hero.damage(self.force)
+
 
 
 
@@ -136,12 +120,23 @@ class Orgs:
         sh.canvas.root.after(30, self.checker_collide)
 
 
+    def damage(self, damage):  #урон
+        self.health -= damage
+        self.health_label.config(text = "health = " + str(self.health) + "%")
+        if self.health < 1:
+            sh.canvas.canvas.delete(self.rect_id)
+            self.health = 1
+            list_of_orgs.remove(self)
+            print(list_of_orgs)
 
 list_of_orgs = []
 
-for org in range(1):
-    temp = Orgs("org" + str(org), "org", 100, 10, rndt(0, 640, 10), rndt(0, 480, 10))
+
+
+
+
+for org in range(3):
+    temp = Orgs("org" + str(org), "org", 100, 1, rndt(0, 640, 10), rndt(0, 480, 10))
     temp.coords()
-    temp.move_org()
     temp.checker_collide()
     list_of_orgs.append(temp)
