@@ -8,6 +8,7 @@ import portal as prtl
 import barrier
 import orgs
 import hero
+import interaction as inter
 
 
 

@@ -4,6 +4,7 @@ from random import randrange as rndt
 import portal as prtl
 import spike_pillar as sp
 import barrier
+import hero
 
 
 
@@ -23,20 +24,11 @@ class Orgs:
         self.color = "red"
         self.rect_id = sh.canvas.canvas.create_rectangle(self.x, self.y, self.x + 10, self.y + 10, fill=self.color)
         self.direction = ""
-        self.health_label = sh.Label(sh.canvas.root, text = "health = " + str(self.health) + "%")
 
-        self.health_label.grid()
 
     def coords(self):
         self.coordinates = sh.canvas.canvas.coords(self.rect_id)
         sh.canvas.root.after(10,self.coords)
-
-
-
-
-
-
-
 
 
 
@@ -54,12 +46,78 @@ class Orgs:
                 sh.canvas.canvas.move(self.rect_id, 0, -10)
 
 
-        for item in prtl.list_of_portals:
-            if self.coordinates == item.coordinates:
-                sh.canvas.canvas.move(self.rect_id, rndt(-50, 50, 10), rndt(-50, 50, 10))
+    #    for item in prtl.list_of_portals:
+    #        if self.coordinates == item.coordinates:
+    #            sh.canvas.canvas.move(self.rect_id, rndt(-50, 50, 10), rndt(-50, 50, 10))
 
 
 
+
+        for item in sp.list_of_pillares:
+            #укалывание справа
+            if self.coordinates[0] == item.coordinates[2] and self.coordinates[1] == item.coordinates[1] :
+                self.damage(item.force)
+                sh.canvas.canvas.move(self.rect_id, 10, 0)
+            #укалывание снизу
+            elif self.coordinates[0] == item.coordinates[0] and self.coordinates[1] == item.coordinates[3] :
+                self.damage(item.force)
+                sh.canvas.canvas.move(self.rect_id, 0, 10)
+            #укалывание слева
+            elif self.coordinates[1] == item.coordinates[1] and self.coordinates[2] == item.coordinates[0] :
+                self.damage(item.force)
+                sh.canvas.canvas.move(self.rect_id, -10, 0)
+            #укалывание сверху
+            elif self.coordinates[0] == item.coordinates[0] and self.coordinates[3] == item.coordinates[1] :
+                self.damage(item.force)
+                sh.canvas.canvas.move(self.rect_id, 0, -10)
+
+
+
+        sh.canvas.root.after(30, self.checker_collide)
+
+
+    def damage(self, damage):  #урон
+        self.health -= damage
+        if self.health < 1:
+            sh.canvas.canvas.delete(self.rect_id)
+            list_of_orgs.remove(self)
+            del self
+            print(list_of_orgs)
+
+
+    def move_org(self):
+
+        if hero.hero.coordinates[0] < self.coordinates[0]:
+            sh.canvas.canvas.move(self.rect_id, -10, 0)
+        if hero.hero.coordinates[1] < self.coordinates[1]:
+            sh.canvas.canvas.move(self.rect_id, 0, -10)
+
+        if hero.hero.coordinates[0] > self.coordinates[0]:
+            sh.canvas.canvas.move(self.rect_id, 10, 0)
+        if hero.hero.coordinates[1] > self.coordinates[1]:
+            sh.canvas.canvas.move(self.rect_id, 0, 10)
+        
+
+        sh.canvas.root.after(500, self.move_org)
+
+list_of_orgs = []
+
+
+
+
+
+for org in range(3):
+    temp = Orgs("org" + str(org), "org", 100, 1, rndt(0, 640, 10), rndt(0, 480, 10))
+    temp.coords()
+    temp.checker_collide()
+    temp.move_org()
+
+    list_of_orgs.append(temp)
+
+
+
+
+'''
         for item in barrier.list_of_barriers:
 
 
@@ -93,50 +151,4 @@ class Orgs:
                 sh.canvas.canvas.move(self.rect_id, 0, -10)
 
 
-
-
-
-
-        for item in sp.list_of_pillares:
-            #укалывание справа
-            if self.coordinates[0] == item.coordinates[2] and self.coordinates[1] == item.coordinates[1] :
-                self.damage(item.force)
-                sh.canvas.canvas.move(self.rect_id, 10, 0)
-            #укалывание снизу
-            elif self.coordinates[0] == item.coordinates[0] and self.coordinates[1] == item.coordinates[3] :
-                self.damage(item.force)
-                sh.canvas.canvas.move(self.rect_id, 0, 10)
-            #укалывание слева
-            elif self.coordinates[1] == item.coordinates[1] and self.coordinates[2] == item.coordinates[0] :
-                self.damage(item.force)
-                sh.canvas.canvas.move(self.rect_id, -10, 0)
-            #укалывание сверху
-            elif self.coordinates[0] == item.coordinates[0] and self.coordinates[3] == item.coordinates[1] :
-                self.damage(item.force)
-                sh.canvas.canvas.move(self.rect_id, 0, -10)
-
-
-
-        sh.canvas.root.after(30, self.checker_collide)
-
-
-    def damage(self, damage):  #урон
-        self.health -= damage
-        self.health_label.config(text = "health = " + str(self.health) + "%")
-        if self.health < 1:
-            sh.canvas.canvas.delete(self.rect_id)
-            self.health = 1
-            list_of_orgs.remove(self)
-            print(list_of_orgs)
-
-list_of_orgs = []
-
-
-
-
-
-for org in range(3):
-    temp = Orgs("org" + str(org), "org", 100, 1, rndt(0, 640, 10), rndt(0, 480, 10))
-    temp.coords()
-    temp.checker_collide()
-    list_of_orgs.append(temp)
+'''

@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
-import showing as sh
+
 from random import randrange as rndt
+
+import showing as sh
 
 
 
@@ -22,6 +24,7 @@ class Portal:
 
 
 list_of_portals = []
+
 
 for portal in range(1):
     temp = Portal("p" + str(portal), "portal", 1, 0, rndt(0, 640, 10), rndt(0, 480, 10))

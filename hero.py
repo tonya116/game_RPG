@@ -5,7 +5,7 @@ from random import randrange as rndt
 import portal as prtl
 import spike_pillar as sp
 import barrier
-import orgs
+
 
 
 WIDTH = 640
@@ -53,30 +53,10 @@ class Hero:
             self.health_label.destroy()
             death()
 
-    def fight(self):
-        for item in orgs.list_of_orgs:
-            if self.coordinates[0] == item.coordinates[2] and self.coordinates[1] == item.coordinates[1]:
-                item.damage(self.force)
-            if self.coordinates[0] == item.coordinates[0] and self.coordinates[1] == item.coordinates[3]:
-                item.damage(self.force)
-            if self.coordinates[1] == item.coordinates[1] and self.coordinates[2] == item.coordinates[0]:
-                item.damage(self.force)
-            if self.coordinates[0] == item.coordinates[0] and self.coordinates[3] == item.coordinates[1]:
-                item.damage(self.force)
 
-    def move_org(self):
-        for item in orgs.list_of_orgs:
-            if self.coordinates[0] < item.coordinates[0]:
-                sh.canvas.canvas.move(item.rect_id, -10, 0)
-            if self.coordinates[1] < item.coordinates[1]:
-                sh.canvas.canvas.move(item.rect_id, 0, -10)
 
-            if self.coordinates[0] > item.coordinates[0]:
-                sh.canvas.canvas.move(item.rect_id, 10, 0)
-            if self.coordinates[1] > item.coordinates[1]:
-                sh.canvas.canvas.move(item.rect_id, 0, 10)
 
-        sh.canvas.root.after(500, self.move_org)
+
 
 
     def move_hero(self):  # движение
@@ -84,8 +64,6 @@ class Hero:
         sh.canvas.root.bind('<s>', lambda event: sh.canvas.canvas.move(self.rect_id, 0, 10))
         sh.canvas.root.bind('<a>', lambda event: sh.canvas.canvas.move(self.rect_id, -10, 0))
         sh.canvas.root.bind('<d>', lambda event: sh.canvas.canvas.move(self.rect_id, 10, 0))
-        sh.canvas.root.bind('<space>', lambda event: self.fight())
-
 
     def checker_collide(self):
 
@@ -153,9 +131,6 @@ class Hero:
                 sh.canvas.canvas.move(self.rect_id, 0, -10)
 
 
-        for item in orgs.list_of_orgs:
-            if self.coordinates == item.coordinates:
-                self.damage(item.force)
 
         sh.canvas.root.after(30, self.checker_collide)
 
@@ -166,14 +141,15 @@ class Hero:
 
 
 hero = Hero("Den", "Hero", 100, 50, rndt(0, 640, 10),rndt(0, 480, 10))
+
 hero.coords()
 hero.move_hero()
 
 hero.check_collide_box()
 hero.checker_collide()
 
-hero.fight()
-hero.move_org()
+
+
 
 
 def death():
