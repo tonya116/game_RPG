@@ -8,17 +8,39 @@ import portal as prtl
 import barrier
 import orgs
 import hero
-import interaction as inter
+import interaction2 as inter
 
 
 
 WIDTH = 640
 HEIGHT = 480
-IN_GAME = True
 
+list_of_all = []
 
 
 def main():
+    q = 0
+    list_of_all.append(hero.hero)
+    for i in orgs.list_of_orgs:
+        list_of_all.append(i)
+
+    for i in barrier.list_of_barriers:
+        list_of_all.append(i)
+
+    for i in prtl.list_of_portals:
+        list_of_all.append(i)
+
+    for i in sp.list_of_pillares:
+        list_of_all.append(i)
+
+    print(len(list_of_all))
+
+    for i in list_of_all:
+        for j in list_of_all:
+            q += 1
+            interaction = inter.Checker_collide(i, j)
+            interaction.interaction()
+
 
     sh.canvas.root.mainloop()
 

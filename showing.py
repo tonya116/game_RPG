@@ -17,3 +17,15 @@ class Showing:
 
 
 canvas = Showing()
+
+class Entity:
+
+    def __init__(self, x, y, color):
+        self.x = x
+        self.y = y
+        self.color = color
+        self.rect_id = canvas.canvas.create_rectangle(self.x, self.y, self.x + 10, self.y + 10, fill=self.color)
+
+
+    def coords(self):
+        return canvas.canvas.coords(self.rect_id)
