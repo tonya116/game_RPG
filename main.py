@@ -33,7 +33,7 @@ def main():
     for i in sp.list_of_pillares:
         list_of_all.append(i)
 
-    print(len(list_of_all))
+    
 
     for i in list_of_all:
         for j in list_of_all:

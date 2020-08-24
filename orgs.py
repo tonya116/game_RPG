@@ -96,17 +96,17 @@ class Orgs:
             sh.canvas.canvas.move(self.rect_id, 10, 0)
         if hero.hero.coordinates[1] > self.coordinates[1]:
             sh.canvas.canvas.move(self.rect_id, 0, 10)
-        
+
 
         sh.canvas.root.after(500, self.move_org)
 
 list_of_orgs = []
 
 
+count_of_orgs = 0
 
 
-
-for org in range(3):
+for org in range(count_of_orgs):
     temp = Orgs("org" + str(org), "org", 100, 1, rndt(0, 640, 10), rndt(0, 480, 10))
     temp.coords()
     temp.checker_collide()

@@ -22,8 +22,9 @@ class Barrier:
 
 
 list_of_barriers = []
+count_of_barriers = 300
 
-for barrier in range(1):
+for barrier in range(count_of_barriers):
     temp = Barrier("b" + str(barrier), "barrier", 1, 0, rndt(0, 640, 10), rndt(0, 480, 10))
     temp.coords()
     list_of_barriers.append(temp)
