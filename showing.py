@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
+from config import *
 from tkinter import *
 
 
-WIDTH = 640
-HEIGHT = 480
+
+
 
 
 class Showing:
@@ -13,10 +14,13 @@ class Showing:
     def __init__(self):
         self.root = Tk()
         self.canvas = Canvas(self.root, width=WIDTH, height=HEIGHT, bg='black')
-        self.canvas.grid()
+
+
+
 
 
 canvas = Showing()
+
 
 class Entity:
 
@@ -24,8 +28,13 @@ class Entity:
         self.x = x
         self.y = y
         self.color = color
-        self.rect_id = canvas.canvas.create_rectangle(self.x, self.y, self.x + 10, self.y + 10, fill=self.color)
+        self.rect_id = canvas.canvas.create_rectangle(self.x, self.y, self.x + step, self.y + step, fill=self.color)
 
 
     def coords(self):
         return canvas.canvas.coords(self.rect_id)
+
+
+    def move(self, x, y):
+
+        canvas.canvas.move(self.rect_id, x, y)

@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+
+from config import *
 import showing as sh
 from random import randrange as rndt
 
@@ -13,19 +15,11 @@ class SpikePillar:
         self.race = race
         self.force = force
         self.color = "brown"
-        self.rect_id = sh.canvas.canvas.create_rectangle(self.x,
-                                                         self.y,
-                                                         self.x + 10,
-                                                         self.y + 10,
-                                                         fill=self.color)
+        self.rect_id = sh.Entity(x, y, self.color)
 
     def coords(self):
-        self.coordinates = sh.canvas.canvas.coords(self.rect_id)
+        self.coordinates = self.rect_id.coords()
 
-
-list_of_pillares = []
-
-for pillar in range(1):
-    temp = SpikePillar("sp" + str(pillar), "spike_pillar", 1, 5, rndt(0, 640, 10), rndt(0, 480, 10))
-    temp.coords()
-    list_of_pillares.append(temp)
+    def death(self):
+        sh.canvas.canvas.delete(self.rect_id.rect_id)
+        del self

@@ -1,172 +1,135 @@
 # -*- coding: utf-8 -*-
+from config import *
+
 import showing as sh
 from random import randrange as rndt
-
-import portal as prtl
-import spike_pillar as sp
-import barrier
-
+import orgs
+import interaction2 as inter
+#import server as s
 
 
-WIDTH = 640
-HEIGHT = 480
+
+
+
 
 class Hero:
     """
     этот класс связан со всем, что связано с героем
     """
-    def __init__(self, name, race, health, force, x, y):
+    def __init__(self, name, race, health, force, level_magic, x, y):
         self.x = x
         self.y = y
-        self.word = 0
+        self.name = name
         self.health = health
         self.race = race
         self.force = force
+        self.level_magic = level_magic
         self.color = "green"
-        self.direction = ""
         self.rect_id = sh.Entity(x, y, self.color)
-        self.health_label = sh.Label(sh.canvas.root, text = "health = " + str(self.health) + "%")
-        self.mapping = {"s": (0, 10), "w": (0, -10),
-                        "a": (-10, 0), "d": (10, 0) }
+        self.name_label = sh.canvas.canvas.create_text(HEIGHT/5*1, 500,
+                                text = "name = " + str(self.name), fill="white")
+        self.health_label = sh.canvas.canvas.create_text(HEIGHT/5*2, 500,
+                                text = "health = " + str(self.health) + "%", fill="white")
+        self.race_label = sh.canvas.canvas.create_text(HEIGHT/5*3, 500,
+                                text = "race = " + str(self.race), fill="white")
+        self.force_label = sh.canvas.canvas.create_text(HEIGHT/5*4, 500,
+                                text = "force = " + str(self.force), fill="white")
+        self.level_magic_label = sh.canvas.canvas.create_text(HEIGHT/5*5, 500,
+                                text = "level_magic = " + str(self.level_magic), fill="white")
+        self.mapping = {"s": (0, step), "w": (0, -step),
+                        "a": (-step, 0), "d": (step, 0) }
 
         self.vector = self.mapping["d"]
-        self.health_label.grid()
+
 
 
     def coords(self):
         self.coordinates = self.rect_id.coords()
-        sh.canvas.root.after(10, self.coords)
-
-    def check_collide_box(self):
-
-        if int(self.coordinates[0]) < 0:
-            sh.canvas.canvas.move(self.rect_id, 10, 0)
-        elif int(self.coordinates[1]) < 0:
-            sh.canvas.canvas.move(self.rect_id, 0, 10)
-        elif int(self.coordinates[2]) > WIDTH:
-            sh.canvas.canvas.move(self.rect_id, -10, 0)
-        elif int(self.coordinates[3]) > HEIGHT:
-            sh.canvas.canvas.move(self.rect_id, 0, -10)
-
-        sh.canvas.root.after(10,self.check_collide_box)
+        self.x1 = self.coordinates[0]
+        self.y1 = self.coordinates[1]
+        self.x2 = self.coordinates[2]
+        self.y2 = self.coordinates[3]
 
 
     def damage(self, damage):  #урон
         self.health -= damage
-        self.health_label.config(text = "health = " + str(self.health) + "%")
-        if self.health < 1:
-            self.health_label.destroy()
-            death()
+        sh.canvas.canvas.itemconfig(self.health_label,
+                    text = "health = " + str(self.health) + "%")
+        #self.health_label.config(text = "health = " + str(int(self.health)) + "%")
+        if self.health <= 0:
+            self.death()
+
+    def death(self):
+        sh.canvas.canvas.itemconfig(self.health_label,
+                            text = "You are dead")
+        sh.canvas.canvas.delete(self.rect_id.rect_id)
+        del self
 
 
 
-    def change_direction(self, event):
-        """ Изменяет направление движения Героя """
+
+    def key_press(self, event):
 
         if event.keysym in self.mapping:
             self.vector = self.mapping[event.keysym]
-            print(event.keysym)
-            print(self.vector)
+            self.v_x, self.v_y = self.vector
+            self.coords()
             self.move()
+
+        if event.keysym == "space":
+            inter.inter.orgs(self, orgs.list_of_orgs)
+
+
+
 
     def move(self):
 
-        #sh.canvas.canvas.move(self.rect_id.rect_id, self.vector[0], self.vector[1])
         self.coords()
 
-        for item in barrier.list_of_barriers:
-
-            if (self.coordinates[0] == item.coordinates[2] and self.coordinates[1] == item.coordinates[1] and self.vector[0] == -10 and self.vector[1] == 0) or (self.coordinates[0] == item.coordinates[0] and self.coordinates[1] == item.coordinates[3] and self.vector[0] == 0 and self.vector[1] == -10) or (self.coordinates[1] == item.coordinates[1] and self.coordinates[2] == item.coordinates[0] and self.vector[0] == 10 and self.vector[1] == 0) or (self.coordinates[0] == item.coordinates[0] and self.coordinates[3] == item.coordinates[1] and self.vector[0] == 0 and self.vector[1] == 10):
-                pass
-            else:
-                self.word += 1
-
-        print(self.word, len(barrier.list_of_barriers))
-
-        if self.word == len(barrier.list_of_barriers):
-            sh.canvas.canvas.move(self.rect_id.rect_id, self.vector[0], self.vector[1])
-
-
-
-        self.word = 0
-
+        inter.inter.apple(self)
+        inter.inter.barrier(self)
+        inter.inter.portal(self)
+        inter.inter.pillares(self)
 
     def move_hero_bind(self):
 
-        sh.canvas.root.bind("<KeyPress>", self.change_direction)
+        sh.canvas.root.bind("<KeyPress>", self.key_press)
 
-    def checker_collide(self):
+    def healing(self, health):
 
-        for item in prtl.list_of_portals:
-            if self.coordinates == item.coordinates:
-                sh.canvas.canvas.move(self.rect_id.rect_id, rndt(-50, 50, 10), rndt(-50, 50, 10))
+        if self.health + health >= 100:
+            self.health = 100
+        else:
+            self.health += health
+        sh.canvas.canvas.itemconfig(self.health_label,
+                            text = "health = " + str(self.health) + "%")
+        #self.health_label.config(text = "health = " + str(int(self.health)) + "%")
 
+    def regeneration(self):  #регенерация
 
+        if self.health <= 20:
+            self.level_magic -= self.level_magic/2
+            sh.canvas.canvas.itemconfig(self.level_magic_label,
+                    text = "level_magic = " + str(int(self.level_magic)) + "%")
+            self.health *= 1.5
+            sh.canvas.canvas.itemconfig(self.health_label,
+                    text = "health = " + str(int(self.health)) + "%")
 
+        sh.canvas.canvas.after(3000, self.regeneration)
 
-        for item in sp.list_of_pillares:
-            #укалывание справа
-            if self.coordinates[0] == item.coordinates[2] and self.coordinates[1] == item.coordinates[1] :
-                self.damage(item.force)
-                sh.canvas.canvas.move(self.rect_id.rect_id, 10, 0)
-            #укалывание снизу
-            elif self.coordinates[0] == item.coordinates[0] and self.coordinates[1] == item.coordinates[3] :
-                self.damage(item.force)
-                sh.canvas.canvas.move(self.rect_id.rect_id, 0, 10)
-            #укалывание слева
-            elif self.coordinates[1] == item.coordinates[1] and self.coordinates[2] == item.coordinates[0] :
-                self.damage(item.force)
-                sh.canvas.canvas.move(self.rect_id.rect_id, -10, 0)
-            #укалывание сверху
-            elif self.coordinates[0] == item.coordinates[0] and self.coordinates[3] == item.coordinates[1] :
-                self.damage(item.force)
-                sh.canvas.canvas.move(self.rect_id.rect_id, 0, -10)
+    def regeneration_magic(self):
 
+        if self.level_magic < 100 and self.level_magic >= 0:
+            self.level_magic += 1
+            sh.canvas.canvas.itemconfig(self.level_magic_label,
+                    text = "level_magic = " + str(int(self.level_magic)) + "%")
 
-
-        sh.canvas.root.after(30, self.checker_collide)
-
-
+        sh.canvas.canvas.after(1000, self.regeneration_magic)
 
 
 
-
-
-hero = Hero("Den", "Hero", 100, 50, rndt(0, 640, 10),rndt(0, 480, 10))
-
-
+hero = Hero(name_of_hero, "Hero" , 100, 50, 100, rndt(0, HEIGHT, step) ,rndt(0, HEIGHT, step))
 hero.coords()
 hero.move_hero_bind()
-
-
-hero.check_collide_box()
-hero.checker_collide()
-
-
-
-
-
-def death():
-    global hero
-    sh.canvas.canvas.delete(hero.rect_id.rect_id)
-    death_label = sh.Label(sh.canvas.root, text = "You dead")
-    death_label.grid()
-    del hero
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    #def regeneration(self):  #регенерация
-    #    if self.level_health <= self.health-10:
-    #        self.level_magic -= self.level_magic/2
-    #        self.level_health += int(0.1 * self.health)
+hero.regeneration_magic()
+hero.regeneration()

@@ -1,15 +1,14 @@
 # -*- coding: utf-8 -*-
+from config import *
 import showing as sh
 from random import randrange as rndt
-import portal as prtl
-import spike_pillar as sp
-import barrier
+
 import hero
+import interaction2 as inter
 
 
 
-WIDTH = 640
-HEIGHT = 480
+
 
 class Orgs:
     """
@@ -22,133 +21,63 @@ class Orgs:
         self.race = race
         self.force = force
         self.color = "red"
-        self.rect_id = sh.canvas.canvas.create_rectangle(self.x, self.y, self.x + 10, self.y + 10, fill=self.color)
-        self.direction = ""
+        self.rect_id = sh.Entity(x, y, self.color)
+        self.mapping = {"s": (0, step), "w": (0, -step),
+                        "a": (-step, 0), "d": (step, 0) }
+
+
+        self.vector = self.mapping["d"]
+        self.v_x, self.v_y = self.vector
 
 
     def coords(self):
-        self.coordinates = sh.canvas.canvas.coords(self.rect_id)
-        sh.canvas.root.after(10,self.coords)
 
-
+        self.coordinates = self.rect_id.coords()
+        self.x1 = self.coordinates[0]
+        self.y1 = self.coordinates[1]
+        self.x2 = self.coordinates[2]
+        self.y2 = self.coordinates[3]
 
     def checker_collide(self):
 
-        for i in range(1):
-
-            if int(self.coordinates[0]) < 0:
-                sh.canvas.canvas.move(self.rect_id, 10, 0)
-            elif int(self.coordinates[1]) < 0:
-                sh.canvas.canvas.move(self.rect_id, 0, 10)
-            elif int(self.coordinates[2]) > WIDTH:
-                sh.canvas.canvas.move(self.rect_id, -10, 0)
-            elif int(self.coordinates[3]) > HEIGHT:
-                sh.canvas.canvas.move(self.rect_id, 0, -10)
-
-
-    #    for item in prtl.list_of_portals:
-    #        if self.coordinates == item.coordinates:
-    #            sh.canvas.canvas.move(self.rect_id, rndt(-50, 50, 10), rndt(-50, 50, 10))
-
-
-
-
-        for item in sp.list_of_pillares:
-            #укалывание справа
-            if self.coordinates[0] == item.coordinates[2] and self.coordinates[1] == item.coordinates[1] :
-                self.damage(item.force)
-                sh.canvas.canvas.move(self.rect_id, 10, 0)
-            #укалывание снизу
-            elif self.coordinates[0] == item.coordinates[0] and self.coordinates[1] == item.coordinates[3] :
-                self.damage(item.force)
-                sh.canvas.canvas.move(self.rect_id, 0, 10)
-            #укалывание слева
-            elif self.coordinates[1] == item.coordinates[1] and self.coordinates[2] == item.coordinates[0] :
-                self.damage(item.force)
-                sh.canvas.canvas.move(self.rect_id, -10, 0)
-            #укалывание сверху
-            elif self.coordinates[0] == item.coordinates[0] and self.coordinates[3] == item.coordinates[1] :
-                self.damage(item.force)
-                sh.canvas.canvas.move(self.rect_id, 0, -10)
-
-
-
-        sh.canvas.root.after(30, self.checker_collide)
+        inter.inter.apple(self)
+        inter.inter.barrier(self)
+        inter.inter.portal(self)
+        inter.inter.pillares(self)
 
 
     def damage(self, damage):  #урон
+
         self.health -= damage
         if self.health < 1:
-            sh.canvas.canvas.delete(self.rect_id)
-            list_of_orgs.remove(self)
-            del self
-            print(list_of_orgs)
+            self.death()
 
+    def death(self):
+        sh.canvas.canvas.delete(self.rect_id.rect_id)
+        del self
 
     def move_org(self):
 
-        if hero.hero.coordinates[0] < self.coordinates[0]:
-            sh.canvas.canvas.move(self.rect_id, -10, 0)
-        if hero.hero.coordinates[1] < self.coordinates[1]:
-            sh.canvas.canvas.move(self.rect_id, 0, -10)
+        self.v_x, self.v_y = self.change_direction()
+        self.checker_collide()
+        sh.canvas.canvas.after(250, self.move_org)
 
-        if hero.hero.coordinates[0] > self.coordinates[0]:
-            sh.canvas.canvas.move(self.rect_id, 10, 0)
-        if hero.hero.coordinates[1] > self.coordinates[1]:
-            sh.canvas.canvas.move(self.rect_id, 0, 10)
+    def change_direction(self):
 
+        if hero.hero.x1 < self.x1:
+            return -step,  0
 
-        sh.canvas.root.after(500, self.move_org)
+        if hero.hero.y1 < self.y1:
+            return 0,  -step
 
-list_of_orgs = []
+        if hero.hero.x1 > self.x1:
+            return step,  0
 
-
-count_of_orgs = 0
-
-
-for org in range(count_of_orgs):
-    temp = Orgs("org" + str(org), "org", 100, 1, rndt(0, 640, 10), rndt(0, 480, 10))
-    temp.coords()
-    temp.checker_collide()
-    temp.move_org()
-
-    list_of_orgs.append(temp)
+        if hero.hero.y1 > self.y1:
+            return 0,  step
 
 
+        elif hero.hero.x1 == self.x1 and hero.hero.y1 == self.y1:
+            hero.hero.damage(self.force)
 
-
-'''
-        for item in barrier.list_of_barriers:
-
-
-            #прикасание справа
-            if self.coordinates[0] == item.coordinates[2] and self.coordinates[1] == item.coordinates[1]:
-                self.direction = "right"
-
-            if self.coordinates == item.coordinates and self.direction == "right":
-
-                sh.canvas.canvas.move(self.rect_id, 10, 0)
-            #прикасание снизу
-            if self.coordinates[0] == item.coordinates[0] and self.coordinates[1] == item.coordinates[3]:
-                self.direction = "down"
-
-            if self.coordinates == item.coordinates and self.direction == "down":
-
-                sh.canvas.canvas.move(self.rect_id, 0, 10)
-            #прикасание слева
-            if self.coordinates[1] == item.coordinates[1] and self.coordinates[2] == item.coordinates[0]:
-                self.direction = "left"
-
-            if self.coordinates == item.coordinates and self.direction == "left":
-
-                sh.canvas.canvas.move(self.rect_id, -10, 0)
-            #прикасание сверху
-            if self.coordinates[0] == item.coordinates[0] and self.coordinates[3] == item.coordinates[1]:
-                self.direction = "up"
-
-            if self.coordinates == item.coordinates and self.direction == "up":
-
-                sh.canvas.canvas.move(self.rect_id, 0, -10)
-
-
-'''
+        return step, step
